@@ -1,0 +1,21 @@
+$ time nix build .#packages.aarch64-linux.net_image_pi4 -L && ls -lhLsi result/
+# pv result/boot.img.zstd | unzstd > /dev/mmcblk0
+# zfs create -b 8192 -V 8G naspool/rpi/netboot-1
+services.tgtd.targets."iqn.2021-08.com.example:123456" = { backingStore = "/dev/naspool/rpi/netboot-1"; index=3; };
+# iscsiadm -m discovery -t sendtargets -p nas.localnet
+# iscsiadm -m node -T iqn.2021-08.com.example:pi400.img -p nas.localnet -l
+[6621533.755589] sd 11:0:0:1: [sdf] 16777216 512-byte logical blocks: (8.59 GB/8.00 GiB)
+# pv result/root.img.zst | unzstd > /dev/sdf
+# iscsiadm -m node -T iqn.2021-08.com.example:pi400.img -p nas.localnet -u
+
+
+alternative way to update/deploy
+$ time nix build .#packages.aarch64-linux.net_image_pi4 -L && ls -lhLsi result/
+$ pv result/boot.img.zstd | ssh root@pi4 'unzstd > /dev/mmcblk0'
+shutdown the pi4, then rewrite its image
+# iscsiadm -m node -T iqn.2021-08.com.example:pi400.img -p nas.localnet -l
+# pv result/root.img.zst | unzstd > /dev/sdf
+# iscsiadm -m node -T iqn.2021-08.com.example:pi400.img -p nas.localnet -u
+
+useful cmds:
+$ ssh-copy-id -f -i /etc/nixos/keys/distro root@pi4

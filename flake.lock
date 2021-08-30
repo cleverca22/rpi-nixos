@@ -1,0 +1,42 @@
+{
+  "nodes": {
+    "nixos-configs": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1629880963,
+        "narHash": "sha256-Lfla5xnDrZ3Ygp8sA2ynt7CwTnjm3z/CBFK/H+e9zH0=",
+        "owner": "cleverca22",
+        "repo": "nixos-configs",
+        "rev": "38d4c65b03e6b6936ee2ac8e6601e03fa053bf80",
+        "type": "github"
+      },
+      "original": {
+        "owner": "cleverca22",
+        "repo": "nixos-configs",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1628706596,
+        "narHash": "sha256-MlVBWZ5cuuvu5bOc5GJqbq9vDHS9ji1nE9C45y7KCtQ=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "62ca1cc769207f3d64baad30cf73eacdddbfc4be",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "type": "indirect"
+      }
+    },
+    "root": {
+      "inputs": {
+        "nixos-configs": "nixos-configs",
+        "nixpkgs": "nixpkgs"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
