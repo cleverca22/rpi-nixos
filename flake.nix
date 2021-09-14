@@ -46,7 +46,6 @@
       sdImage = eval.config.system.build.sdImage;
       extra = {
         inherit eval;
-        system = eval.system;
       };
     in sdImage // extra;
     mkNetImage = model:
