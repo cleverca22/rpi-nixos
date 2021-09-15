@@ -11,6 +11,7 @@
   environment.systemPackages = with pkgs; [
     usbutils
     dtc
+    screen
   ];
   services = {
     openssh = {
