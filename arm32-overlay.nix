@@ -12,4 +12,7 @@ self: super: {
   });
   libdrm = super.libdrm.override { withValgrind = false; };
   #librsvg = false;
+  valgrind = super.valgrind.overrideAttrs (old: {
+    patches = [ ./valgrind.patch ];
+  });
 }
