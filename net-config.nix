@@ -48,7 +48,7 @@ in {
       };
       postBootCommands = ''
         if [ -f /nix-path-registration ]; then
-          rootPart=$(${pkgs.util-linux}/bin/findmnt -n -o SOURCE /)
+          rootPart=$(${pkgs.utillinux}/bin/findmnt -n -o SOURCE /)
           ${pkgs.e2fsprogs}/bin/resize2fs $rootPart
           ${config.nix.package.out}/bin/nix-store --load-db < /nix-path-registration
           rm -f /nix-path-registration

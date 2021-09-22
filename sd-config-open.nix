@@ -17,9 +17,9 @@ let
 in
 {
   options = {
-    rpi-nixos.openfirmware.enable = lib.mkEnableOption "boot using the open rpi firmware";
   };
   config = lib.mkIf config.rpi-nixos.openfirmware.enable {
+    boot.loader.openpi.enable = true;
     sdImage = {
       firmwareSize = 32;
       populateFirmwareCommands = ''

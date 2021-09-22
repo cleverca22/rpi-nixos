@@ -24,9 +24,9 @@
     lk-overlay-src = hostPkgs.fetchFromGitHub {
       owner = "librerpi";
       repo = "lk-overlay";
-      rev = "c57b0229197a9b627a5dc874398dfd68257b94b5";
+      rev = "8ac1ca520b53b6520d12a027dbfdc6627ad84dc3";
       fetchSubmodules = true;
-      sha256 = "sha256-USGfZ09OegXTst45T6S6BQu6kV2vd6JVhTWrG2B13/Q=";
+      sha256 = "sha256-HiH+4LEo6BKlhGVOBxrUKN4SKAy4ddXGNxUSIdQiNDA=";
     };
     lk-overlay = import lk-overlay-src {};
     # TODO, also use callPackage
@@ -66,9 +66,10 @@
           ./sd-config-open.nix
           ./sd-config-closed.nix
           ./base-closed.nix
+          ./all-options.nix
         ];
         boot.loader.raspberryPi.version = model;
-        nixpkgs.crossSystem.system = system;
+        #nixpkgs.crossSystem.system = system;
         _module.args = {
           inherit lk-overlay rpi-open-firmware;
         };
@@ -76,8 +77,8 @@
         #nixpkgs.crossSystem = lib.systems.examples.armv7l-hf-multiplatform;
         #nixpkgs.pkgs = hostPkgs.pkgsCross.armv7l-hf-multiplatform;
       };
-      #inherit system;
-      system = "x86_64-linux";
+      inherit system;
+      #system = "x86_64-linux";
     };
   in {
     packages = {

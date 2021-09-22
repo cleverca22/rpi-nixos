@@ -3,7 +3,6 @@
   imports = [
   ];
   options = {
-    rpi-nixos.closedfirmware.enable = lib.mkEnableOption "boot using the official closed-source firmware";
   };
   config = lib.mkIf config.rpi-nixos.closedfirmware.enable {
     sdImage = {

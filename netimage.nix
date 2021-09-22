@@ -1,12 +1,16 @@
 { model, pkgs, mkImage, configuration ? {}, nixpkgs, nixos-configs }:
 let
-  eval = mkImage model {
-    imports = [
-      configuration
-      ./net-config.nix
-      "${nixos-configs}/iscsi-boot.nix"
-    ];
-    rpi-netboot.enable = true;
+  eval = mkImage {
+    model = model;
+    extra = {
+      imports = [
+        configuration
+        ./net-config.nix
+        "${nixos-configs}/iscsi-boot.nix"
+      ];
+      rpi-netboot.enable = true;
+    };
+    firmware = "closed";
   };
   bootdir = pkgs.runCommand "netboot_boot-pi${toString model}" {} ''
     ${eval.config.system.build.installBootLoader} ${eval.system} -d $out
