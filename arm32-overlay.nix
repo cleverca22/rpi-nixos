@@ -15,4 +15,5 @@ self: super: {
   valgrind = super.valgrind.overrideAttrs (old: {
     patches = [ ./valgrind.patch ];
   });
+  parole = super.bashInteractive;
 }
