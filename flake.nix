@@ -17,8 +17,10 @@
     #lk-overlay2.flake = false;
     rpi-open-firmware.url = "github:librerpi/rpi-open-firmware";
     rpi-open-firmware.flake = false;
+    rpi-tools.url = "github:librerpi/rpi-tools";
+    rpi-tools.inputs.nixpkgs.follows = "nixpkgs";
   };
-  outputs = { self, nixpkgs, nixos-configs, nixpkgs-old, rpi-open-firmware }:
+  outputs = { self, nixpkgs, nixos-configs, nixpkgs-old, rpi-open-firmware, rpi-tools }:
   let
     hostPkgs = import nixpkgs { system = "x86_64-linux"; };
     lk-overlay-src = hostPkgs.fetchFromGitHub {
@@ -76,6 +78,10 @@
         #nixpkgs.crossSystem.config = "armv7l-unknown-linux-gnueabihf";
         #nixpkgs.crossSystem = lib.systems.examples.armv7l-hf-multiplatform;
         #nixpkgs.pkgs = hostPkgs.pkgsCross.armv7l-hf-multiplatform;
+        environment.systemPackages = [
+          rpi-tools.packages.armv7l-linux.utils
+          pkgs.i2c-tools
+        ];
       };
       inherit system;
       #system = "x86_64-linux";

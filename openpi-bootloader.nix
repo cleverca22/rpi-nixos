@@ -13,6 +13,7 @@ let
     builddtb ${rpi-open-firmware}/rpi1.dts rpi1.dtb
     builddtb ${rpi-open-firmware}/rpi2.dts rpi2.dtb
     builddtb ${rpi-open-firmware}/rpi3.dts rpi3.dtb
+    echo $out
   '';
 in
 {

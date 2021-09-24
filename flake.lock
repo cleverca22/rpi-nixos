@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "firmware": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1613486701,
+        "narHash": "sha256-L3qchuLwhujKcoFiVnL3Ao6b4iKRI/w113EENOpWMNE=",
+        "owner": "raspberrypi",
+        "repo": "firmware",
+        "rev": "ba6259246c702b04ea56ff1034325e476d460ae8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "raspberrypi",
+        "repo": "firmware",
+        "type": "github"
+      }
+    },
     "nixos-configs": {
       "flake": false,
       "locked": {
@@ -54,22 +70,94 @@
         "nixos-configs": "nixos-configs",
         "nixpkgs": "nixpkgs",
         "nixpkgs-old": "nixpkgs-old",
-        "rpi-open-firmware": "rpi-open-firmware"
+        "rpi-open-firmware": "rpi-open-firmware",
+        "rpi-tools": "rpi-tools"
+      }
+    },
+    "rpi-eeprom": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1607946172,
+        "narHash": "sha256-E1/doS2LVpOgJutXNYJweecMQM10RUiujt5YQohd53o=",
+        "owner": "raspberrypi",
+        "repo": "rpi-eeprom",
+        "rev": "54a9796abbee59067bff9da6b90c1014178f2c21",
+        "type": "github"
+      },
+      "original": {
+        "owner": "raspberrypi",
+        "repo": "rpi-eeprom",
+        "type": "github"
       }
     },
     "rpi-open-firmware": {
       "flake": false,
       "locked": {
-        "lastModified": 1631524268,
-        "narHash": "sha256-TrEWW9XvIVZ/hYbp/2mtvmHegZH7bd2Ywdm+ONFPpa4=",
+        "lastModified": 1632476763,
+        "narHash": "sha256-FvEydAi+RdqXlUKptZB5Vnzkaaq85Mt4hrxPGel1/bg=",
         "owner": "librerpi",
         "repo": "rpi-open-firmware",
-        "rev": "dd9e73ac7e02ed53efa7b63eb5a07be50154a464",
+        "rev": "11981a335a4755b24f37fe1d026bc4b070cca3cd",
         "type": "github"
       },
       "original": {
         "owner": "librerpi",
         "repo": "rpi-open-firmware",
+        "type": "github"
+      }
+    },
+    "rpi-open-firmware_2": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1627196750,
+        "narHash": "sha256-3MdVYk1z1Ro7QXGsWMoV0yTc5SLptO+oonTWQPi90sA=",
+        "owner": "librerpi",
+        "repo": "rpi-open-firmware",
+        "rev": "418f43903320b31e7846223c95448fe3f44b506c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "librerpi",
+        "repo": "rpi-open-firmware",
+        "type": "github"
+      }
+    },
+    "rpi-tools": {
+      "inputs": {
+        "firmware": "firmware",
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "rpi-eeprom": "rpi-eeprom",
+        "rpi-open-firmware": "rpi-open-firmware_2",
+        "utils": "utils"
+      },
+      "locked": {
+        "lastModified": 1632464859,
+        "narHash": "sha256-SiH/yA3CGNRk/yDCRAEYqfbyKJqjrXHfE58kizfCNOM=",
+        "owner": "librerpi",
+        "repo": "rpi-tools",
+        "rev": "5169842702e5a8be7e49135e58507656cf155c31",
+        "type": "github"
+      },
+      "original": {
+        "owner": "librerpi",
+        "repo": "rpi-tools",
+        "type": "github"
+      }
+    },
+    "utils": {
+      "locked": {
+        "lastModified": 1609246779,
+        "narHash": "sha256-eq6ZXE/VWo3EMC65jmIT6H/rrUc9UWOWVujkzav025k=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "08c7ad4a0844adc4a7f9f5bb3beae482e789afa4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
         "type": "github"
       }
     }
