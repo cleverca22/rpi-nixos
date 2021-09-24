@@ -24,9 +24,9 @@
     lk-overlay-src = hostPkgs.fetchFromGitHub {
       owner = "librerpi";
       repo = "lk-overlay";
-      rev = "afe1c73e18ce174dd12e3a35fd01843838e35d02";
+      rev = "b4d1e2b98e26c76cf2d919a5050ef003531ffc60";
       fetchSubmodules = true;
-      sha256 = "sha256-HgI/B5XRYsFeTvlPZClCXWY/KTh2ah1qSCDQOXnXAHY=";
+      sha256 = "sha256-KugfG1CvzKpnlafndP6m0BPzf06qB+ci54TXVL9RJ5U=";
     };
     lk-overlay = import lk-overlay-src {};
     # TODO, also use callPackage
