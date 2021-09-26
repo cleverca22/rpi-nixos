@@ -16,4 +16,16 @@ self: super: {
     patches = [ ./valgrind.patch ];
   });
   parole = super.bashInteractive;
+  yavta = self.stdenv.mkDerivation {
+    name = "yavta";
+    src = builtins.fetchGit {
+      url = "https://git.ideasonboard.org/git/yavta.git/";
+      rev = "65f740aa1758531fd810339bc1b7d1d33666e28a";
+    };
+    installPhase = ''
+      mkdir -pv $out/bin
+      cp yavta $out/bin/
+    '';
+  };
+  v4l-utils = super.v4l-utils.override { withGUI = false; };
 }

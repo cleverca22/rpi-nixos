@@ -21,6 +21,9 @@
     vnstat
     xorg.xeyes xorg.xclock
     scrot
+    v4l-utils
+    yavta
+    i2c-tools
   ];
   services = {
     openssh = {
