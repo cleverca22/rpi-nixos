@@ -18,7 +18,7 @@ self: super: {
   parole = super.bashInteractive;
   yavta = self.stdenv.mkDerivation {
     name = "yavta";
-    src = builtins.fetchGit {
+    src = self.fetchgit {
       url = "https://git.ideasonboard.org/git/yavta.git/";
       rev = "65f740aa1758531fd810339bc1b7d1d33666e28a";
     };
