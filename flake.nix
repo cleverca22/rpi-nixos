@@ -23,6 +23,12 @@
   outputs = { self, nixpkgs, nixos-configs, nixpkgs-old, rpi-open-firmware, rpi-tools }:
   let
     hostPkgs = import nixpkgs { system = "x86_64-linux"; };
+    # TODO, i had trouble building linux with the right cfg in nix
+    # this is a temporary work-around, a linux build in a normal shell
+    zImage = hostPkgs.fetchurl {
+      url = "https://ext.earthtools.ca/videos/private/rpi/zImage-2020-05-19";
+      sha256 = "09kijy3rrwzf6zgrq3pbww9267b1dr0s9rippz7ygk354lr3g7c8";
+    };
     lk-overlay-src = hostPkgs.fetchFromGitHub {
       owner = "librerpi";
       repo = "lk-overlay";
@@ -96,6 +102,20 @@
           ln -sv ${lk-overlay.vc4.vc4.stage1} $out/vc4-stage1
           ln -sv ${lk-overlay.vc4.vc4.stage2} $out/vc4-stage2
           ln -sv ${lk-overlay.arm.rpi2-test} $out/rpi2-test
+        '';
+        dist = hostPkgs.runCommandCC "dist" { buildInputs = [ hostPkgs.dtc ]; } ''
+          mkdir -pv $out/boot/firmware/
+          cp -v ${lk-overlay.vc4.vc4.stage1}/lk.bin $out/boot/firmware/bootcode.bin
+          cp -v ${lk-overlay.vc4.vc4.stage2}/lk.elf $out/boot/lk.elf
+          builddtb() {
+            cc -x assembler-with-cpp -E $1 -o temp
+            egrep -v '^#' < temp > temp2
+            dtc temp2 -o $2
+            rm temp temp2
+          }
+          builddtb ${rpi-open-firmware}/rpi2.dts $out/boot/rpi2.dtb
+          echo root=/dev/mmcblk0p2 > $out/boot/cmdline.txt
+          cp -v ${zImage} $out/boot/zImage
         '';
       };
       armv7l-linux = {
