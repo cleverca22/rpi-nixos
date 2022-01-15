@@ -104,7 +104,7 @@
           ln -sv ${lk-overlay.arm.rpi2-test} $out/rpi2-test
         '';
         dist = hostPkgs.runCommandCC "dist" { buildInputs = [ hostPkgs.dtc ]; } ''
-          mkdir -pv $out/boot/firmware/
+          mkdir -pv $out/boot/firmware/ $out/nix-support
           cp -v ${lk-overlay.vc4.vc4.stage1}/lk.bin $out/boot/firmware/bootcode.bin
           cp -v ${lk-overlay.vc4.vc4.stage2}/lk.elf $out/boot/lk.elf
           builddtb() {
@@ -116,6 +116,11 @@
           builddtb ${rpi-open-firmware}/rpi2.dts $out/boot/rpi2.dtb
           echo root=/dev/mmcblk0p2 > $out/boot/cmdline.txt
           cp -v ${zImage} $out/boot/zImage
+
+          cd $out
+          tar -cvf boot.tar boot/
+
+          echo "file binary-dist $out/boot.tar" >> $out/nix-support/hydra-build-products
         '';
       };
       armv7l-linux = {
