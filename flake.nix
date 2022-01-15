@@ -130,6 +130,7 @@
     };
     hydraJobs.x86_64-linux = {
       sd_image_open_pi2 = self.packages.armv7l-linux.sd_image_open_pi2;
+      dist = self.packages.x86_64-linux.dist;
     };
   };
 }
