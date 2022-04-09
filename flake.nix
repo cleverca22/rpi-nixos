@@ -122,6 +122,15 @@
 
           echo "file binary-dist $out/boot.tar" >> $out/nix-support/hydra-build-products
         '';
+        dist_deb = hostPkgs.runCommandCC "dist_deb" { buildInputs = [ hostPkgs.dpkg ]; } ''
+          cp -r ${./dpkg-input} input
+          chmod -R 755 input
+          mkdir -p $out/nix-support
+          tar -C input -xvf ${self.packages.x86_64-linux.dist}/boot.tar
+          dpkg-deb --build input $out/librepi-firmware.deb
+          # 2022-04-09 00:50:12 < pabs> Architecture should be armhf for ARMv7/8 32-bit devices, armel for less than ARMv7 and arm64 for ARMv8 64-bit
+          echo "file binary-dist $out/librepi-firmware.deb" >> $out/nix-support/hydra-build-products
+        '';
       };
       armv7l-linux = {
         net_image_pi2 = mkNetImage 2;
@@ -136,6 +145,7 @@
     hydraJobs.x86_64-linux = {
       sd_image_open_pi2 = self.packages.armv7l-linux.sd_image_open_pi2;
       dist = self.packages.x86_64-linux.dist;
+      dist_deb = self.packages.x86_64-linux.dist_deb;
     };
   };
 }
