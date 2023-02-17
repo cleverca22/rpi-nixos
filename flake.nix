@@ -118,7 +118,7 @@
           cp -v ${zImage} $out/boot/zImage
 
           cd $out
-          tar -cvf boot.tar boot/
+          tar --sort=name -cvf boot.tar boot/
 
           echo "file binary-dist $out/boot.tar" >> $out/nix-support/hydra-build-products
         '';
