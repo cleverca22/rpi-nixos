@@ -26,7 +26,7 @@
     # TODO, i had trouble building linux with the right cfg in nix
     # this is a temporary work-around, a linux build in a normal shell
     zImage = hostPkgs.fetchurl {
-      url = "https://ext.earthtools.ca/videos/private/rpi/zImage-2020-05-19";
+      url = "https://ext.earthtools.ca/private/rpi/zImage-2020-05-19";
       sha256 = "09kijy3rrwzf6zgrq3pbww9267b1dr0s9rippz7ygk354lr3g7c8";
     };
     lk-overlay-src = hostPkgs.fetchFromGitHub {
@@ -114,6 +114,7 @@
             rm temp temp2
           }
           builddtb ${rpi-open-firmware}/rpi2.dts $out/boot/rpi2.dtb
+          builddtb ${rpi-open-firmware}/rpi3.dts $out/boot/rpi3.dtb
           echo root=/dev/mmcblk0p2 > $out/boot/cmdline.txt
           cp -v ${zImage} $out/boot/zImage
 
