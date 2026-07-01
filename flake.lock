@@ -1,6 +1,59 @@
 {
   "nodes": {
+    "barebox": {
+      "inputs": {
+        "barebox": "barebox_2",
+        "nixpkgs": "nixpkgs",
+        "utils": "utils"
+      },
+      "locked": {
+        "lastModified": 1782915999,
+        "narHash": "sha256-0GY0JfXPkfjYYtbtP+pn7HFrfFxiIGxOYiAOVCiBMGA=",
+        "owner": "cleverca22",
+        "repo": "barebox-nix",
+        "rev": "1a043c729d42b7e4762a93ca67f398d6c9c5d247",
+        "type": "github"
+      },
+      "original": {
+        "owner": "cleverca22",
+        "repo": "barebox-nix",
+        "type": "github"
+      }
+    },
+    "barebox_2": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1782902537,
+        "narHash": "sha256-5U6g2EGo78yr1ihWZZLTNpIIg6GKtpFrm7050OcCMTE=",
+        "owner": "cleverca22",
+        "repo": "barebox",
+        "rev": "b09d543fe5b6003e517717fd38233a3ce1d33ecc",
+        "type": "github"
+      },
+      "original": {
+        "owner": "cleverca22",
+        "ref": "rpi-open-firmware-support",
+        "repo": "barebox",
+        "type": "github"
+      }
+    },
     "firmware": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1709210091,
+        "narHash": "sha256-jZKIAttMc0bhsVBJND7tyekr3T7w8ZhyOq4JAnrop4M=",
+        "owner": "raspberrypi",
+        "repo": "firmware",
+        "rev": "dc94391863445ab867782d25ca6ae1e88579df5d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "raspberrypi",
+        "repo": "firmware",
+        "type": "github"
+      }
+    },
+    "firmware_2": {
       "flake": false,
       "locked": {
         "lastModified": 1613486701,
@@ -34,18 +87,15 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1595205001,
-        "narHash": "sha256-ZPh9dtbo64k2o6qFlvlwDTW2Yp/Jzab/3BpmYlTO6BI=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "c32264ef79ffeb807015b66fd6c5c893ba1c8ee9",
-        "type": "github"
+        "lastModified": 1782821651,
+        "narHash": "sha256-OBddwHNJ+qxOHaKih0bE2PXJeZHlzUC8WOHZrUcnFwY=",
+        "rev": "e52c192be9d7b2c4bd4aed326c8731b35f8bb75c",
+        "type": "tarball",
+        "url": "https://releases.nixos.org/nixpkgs/nixpkgs-26.11pre1025128.e52c192be9d7/nixexprs.tar.xz"
       },
       "original": {
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "c32264ef79ffeb807015b66fd6c5c893ba1c8ee9",
-        "type": "github"
+        "id": "nixpkgs",
+        "type": "indirect"
       }
     },
     "nixpkgs-old": {
@@ -65,10 +115,27 @@
         "type": "github"
       }
     },
+    "nixpkgs_2": {
+      "locked": {
+        "lastModified": 1709249258,
+        "narHash": "sha256-V2xy+V457ZbvgDRLZ+rYB4QuhuTTbzvuUFrdnK4KNR4=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "fb0f4579cd687c585e26631515e13c3b5fe6f68d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
+        "barebox": "barebox",
+        "firmware": "firmware",
         "nixos-configs": "nixos-configs",
-        "nixpkgs": "nixpkgs",
+        "nixpkgs": "nixpkgs_2",
         "nixpkgs-old": "nixpkgs-old",
         "rpi-open-firmware": "rpi-open-firmware",
         "rpi-tools": "rpi-tools"
@@ -124,13 +191,13 @@
     },
     "rpi-tools": {
       "inputs": {
-        "firmware": "firmware",
+        "firmware": "firmware_2",
         "nixpkgs": [
           "nixpkgs"
         ],
         "rpi-eeprom": "rpi-eeprom",
         "rpi-open-firmware": "rpi-open-firmware_2",
-        "utils": "utils"
+        "utils": "utils_2"
       },
       "locked": {
         "lastModified": 1632464859,
@@ -146,7 +213,40 @@
         "type": "github"
       }
     },
+    "systems": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
     "utils": {
+      "inputs": {
+        "systems": "systems"
+      },
+      "locked": {
+        "lastModified": 1731533236,
+        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "utils_2": {
       "locked": {
         "lastModified": 1609246779,
         "narHash": "sha256-eq6ZXE/VWo3EMC65jmIT6H/rrUc9UWOWVujkzav025k=",

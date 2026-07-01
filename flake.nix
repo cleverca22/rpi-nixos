@@ -1,5 +1,6 @@
 {
   inputs = {
+    barebox.url = "github:cleverca22/barebox-nix";
     nixos-configs = {
       url = "github:cleverca22/nixos-configs";
       #url = "path:/home/clever/apps/nixos-configs";
@@ -8,7 +9,7 @@
     #nixpkgs = {
     #  url = "path:/home/clever/apps/rpi/rpi-nixos-nixpkgs";
     #};
-    nixpkgs.url = "github:nixos/nixpkgs?rev=c32264ef79ffeb807015b66fd6c5c893ba1c8ee9";
+    nixpkgs.url = "github:nixos/nixpkgs";
     # for an older gpg that can build
     nixpkgs-old.url = "github:nixos/nixpkgs?rev=1451a52a38f2dda459647a5c2628e7c28e17c4dc";
     nixpkgs-old.flake = false;
@@ -19,8 +20,10 @@
     rpi-open-firmware.flake = false;
     rpi-tools.url = "github:librerpi/rpi-tools";
     rpi-tools.inputs.nixpkgs.follows = "nixpkgs";
+    firmware.flake = false;
+    firmware.url = "github:raspberrypi/firmware";
   };
-  outputs = { self, nixpkgs, nixos-configs, nixpkgs-old, rpi-open-firmware, rpi-tools }:
+  outputs = { self, barebox, nixpkgs, nixos-configs, nixpkgs-old, rpi-open-firmware, rpi-tools, firmware }:
   let
     hostPkgs = import nixpkgs { system = "x86_64-linux"; };
     # TODO, i had trouble building linux with the right cfg in nix
@@ -32,9 +35,9 @@
     lk-overlay-src = hostPkgs.fetchFromGitHub {
       owner = "librerpi";
       repo = "lk-overlay";
-      rev = "b4d1e2b98e26c76cf2d919a5050ef003531ffc60";
+      rev = "c371503d8e300490882ee15c67f6beae7e9f6d23";
       fetchSubmodules = true;
-      sha256 = "sha256-KugfG1CvzKpnlafndP6m0BPzf06qB+ci54TXVL9RJ5U=";
+      hash = "sha256-BhtlFtxwA16axt//DhOHzkfKRJr6Xj29A0mVDs+jLWA=";
     };
     lk-overlay = import lk-overlay-src {};
     # TODO, also use callPackage
@@ -92,6 +95,43 @@
       inherit system;
       #system = "x86_64-linux";
     };
+    mkImageNostage1 = bootmode: system:
+    let
+      pkgs = nixpkgs.legacyPackages.${system};
+      eval = pkgs.nixos ({ ... }: {
+        fileSystems."/".fsType = "tmpfs";
+        boot.loader.grub.enable = false;
+      });
+      initrd = pkgs.makeInitrd {
+        contents = [
+          {
+            symlink = "/init";
+            object = "${eval.config.system.build.toplevel}/init";
+          }
+        ];
+      };
+      bootFolder = pkgs.runCommand "rpi-boot" {
+        passthru.eval = eval;
+        passAsFile = [ "configtxt" ];
+        configtxt = ''
+          kernel=${eval.config.system.boot.loader.kernelFile}
+          initramfs initrd followkernel
+        '';
+      } ''
+        mkdir $out
+        cd $out
+        cp ${initrd}/initrd initrd
+        cp ${eval.config.system.build.kernel}/${eval.config.system.boot.loader.kernelFile} .
+        cp -v ${firmware}/boot/{start4.elf,fixup4.dat} .
+      '';
+      bootImg = pkgs.vmTools.runInLinuxVM (pkgs.runCommand "bootImg" {
+        preVM = ''
+        '';
+      } ''
+        mtroo
+      '');
+    in
+      bootFolder;
   in {
     packages = {
       x86_64-linux = {
@@ -102,6 +142,15 @@
           ln -sv ${lk-overlay.vc4.vc4.stage1} $out/vc4-stage1
           ln -sv ${lk-overlay.vc4.vc4.stage2} $out/vc4-stage2
           ln -sv ${lk-overlay.arm.rpi2-test} $out/rpi2-test
+          ln -sv ${lk-overlay.vc4.vc4.stage1-spi} $out/vc4-stage1-spi
+          ln -sv ${lk-overlay.vc4.vc4.stage2-spi} $out/vc4-stage2-spi
+        '';
+        barebox-spi = hostPkgs.runCommand "barebox-spi" { nativeBuildInputs = [ lk-overlay.x86_64.mkimage ]; } ''
+          ln -sv ${lk-overlay.vc4.vc4.stage1-spi} vc4-stage1-spi
+          ln -sv ${lk-overlay.vc4.vc4.stage2-spi} vc4-stage2-spi
+          mkimage ${./barebox.json} -I${barebox.packages.x86_64-linux.rpi}
+          mkdir $out
+          cp -v eeprom.bin $out/
         '';
         dist = hostPkgs.runCommandCC "dist" { buildInputs = [ hostPkgs.dtc ]; } ''
           mkdir -pv $out/boot/firmware/ $out/nix-support
@@ -141,6 +190,8 @@
         sd_image_pi3 = mkSdImage { model = 3; firmware = "closed"; };
         sd_image_pi4 = mkSdImage { model = 4; firmware = "closed"; };
         net_image_pi4 = mkNetImage 4;
+
+        pi4_closed_tftpboot_nostage1 = mkImageNostage1 "tftp" "aarch64-linux";
       };
     };
     hydraJobs.x86_64-linux = {

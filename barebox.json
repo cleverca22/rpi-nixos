@@ -1,0 +1,17 @@
+{
+  "bootcode":"vc4-stage1-spi/lk.bin",
+  "files":[
+    {
+      "filename":"vc4-stage2-spi/lk.elf",
+      "alignment":1024,
+      "name":"stage2.elf",
+      "magic":"aa55f11f"
+    },
+    {
+      "filename":"barebox-raspberry-pi.img",
+      "alignment":1024,
+      "name":"arm_loader.bin",
+      "magic":"aa55f11f"
+    }
+  ]
+}
